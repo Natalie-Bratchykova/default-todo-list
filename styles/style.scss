@@ -1,0 +1,228 @@
+// default
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+@mixin default-font-settings {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-variant: small-caps;
+}
+
+@mixin default-buttons-setting($font-size, $padding) {
+  padding: $padding;
+  font-size: $font-size;
+  font-weight: 600;
+  background: white;
+  text-transform: uppercase;
+  transition: all 0.2s linear;
+  border: none;
+  border-radius: 0.2rem;
+
+  &:hover {
+    cursor: pointer;
+    background: rgb(176, 20, 119);
+    color: white;
+    cursor: pointer;
+  }
+}
+
+@mixin title-after-setting($width, $height, $top, $left) {
+  content: "";
+  display: block;
+  width: $width;
+  height: $height;
+  position: absolute;
+  top: $top;
+  left: $left;
+}
+
+html {
+  font-size: 18px;
+  @include default-font-settings();
+}
+
+button,
+input {
+  @include default-font-settings();
+}
+
+// our styles
+.todo {
+  background: rgb(35, 33, 52);
+  color: white;
+  height: 100vh;
+  width: 100vw;
+
+  // intro section style
+  .todo-container {
+    width: fit-content;
+    margin: 0 auto;
+    padding-top: 45%;
+    transform: translateY(-50%);
+
+    .title {
+      font-size: 5rem;
+      position: relative;
+      color: transparent;
+      background: linear-gradient(
+        to right,
+        rgb(123, 26, 123),
+        rgb(176, 20, 119)
+      );
+      -webkit-background-clip: text;
+
+      &::after {
+        background: linear-gradient(
+          to right,
+          rgb(123, 26, 123),
+          rgb(176, 20, 119)
+        );
+        margin-bottom: 0.3rem;
+        @include title-after-setting(10rem, 0.2rem, 100%, 60%);
+      }
+    }
+
+    .todo-container__nav {
+      margin: 7% auto 0;
+      display: flex;
+      justify-content: center;
+
+      button {
+        @include default-buttons-setting(1.5rem, 1.2%);
+      }
+    }
+  }
+
+  //list block
+  .todo__list-place {
+    padding: 2%;
+    .title {
+      font-size: 3rem;
+      text-align: center;
+      position: relative;
+      &:after {
+        background: white;
+        @include title-after-setting(7rem, 0.1rem, 100%, 46%);
+      }
+    }
+
+    // todo list part
+    .todo__list-wrap {
+      margin-top: 3%;
+      background: rgba($color: #fff, $alpha: 0.6);
+      border-radius: 0.3rem;
+      padding: 1%;
+
+      .todo__input {
+        font-size: 1.2rem;
+        padding: 1%;
+        margin: 1%;
+        width: 88%;
+        border: none;
+        border-radius: 0.3rem;
+      }
+
+      .todo__add-option {
+        transition: all 0.3s linear;
+        @include default-buttons-setting(1.5rem, 0.7%);
+      }
+
+      //options
+      .optional {
+        padding: 1%;
+        margin: 1%;
+        background: rgba($color: #fff, $alpha: 0.9);
+        .check-box {
+          accent-color: rgb(176, 20, 119);
+        }
+        .option-label {
+          font-size: 1.5rem;
+          color: #333;
+          width: 90%;
+          display: inline-block;
+        }
+      }
+      .checked_option {
+        background: transparent;
+        border: 1px solid white;
+      }
+
+      #clear {
+        margin-left: 1%;
+      }
+    }
+  }
+
+  .checked {
+    text-decoration: line-through;
+    background-color: transparent;
+  }
+  .disactive {
+    display: none;
+  }
+}
+
+// adaptive
+@media (max-width: 1200px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 1000px) {
+  html {
+    font-size: 17px;
+  }
+}
+
+@media (max-width: 900px) {
+  html {
+    font-size: 16px;
+  }
+
+  .todo {
+    .title {
+      font-size: 1.2rem;
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 700px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 500px) {
+  html {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  html {
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 350px) {
+  html {
+    font-size: 8px;
+  }
+}

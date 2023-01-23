@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To do list</title>
+    <link rel="stylesheet" href="styles/style.css" />
+  </head>
+  <body>
+    <!-- add button for changing theme -->
+    <header class="header"></header>
+    <main class="todo">
+      <section class="todo-container">
+        <h2 class="todo-container__title title">Create your todo list</h2>
+        <nav class="todo-container__nav">
+          <button class="todo-container__button button" id="createTodoList">
+            Create a new list
+          </button>
+        </nav>
+      </section>
+
+      <section class="todo__list-place disactive">
+        <h2 class="title">Your todo list</h2>
+        <div class="todo__list-wrap">
+          <input
+            type="text"
+            id="input-list-options"
+            class="todo__input"
+            placeholder="input something..."
+          />
+          <button class="todo__add-option" id="add-option">Add</button>
+          <div class="todo__users-list" id="user-list"></div>
+          <button class="todo__add-option" id="clear">Clear</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="todo.js"></script>
+  </body>
+</html>
