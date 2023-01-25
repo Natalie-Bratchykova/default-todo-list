@@ -1,28 +1,117 @@
+"use strict";
+//for local storage
+let todoData = [];
+
+let localId = () => {
+  return Math.floor(Math.random() * Math.random() * 100);
+};
 //intro section functional
 const createTodoList = document.getElementById("createTodoList");
 const introSection = document.querySelector(".todo-container");
 const todoListSection = document.querySelector(".todo__list-place");
+
+const listWrap = document.querySelector(".todo__list-wrap");
+listWrap.addEventListener("change", () => {
+  if (inputOption.value === "") {
+  }
+});
+
 createTodoList.addEventListener("click", () => {
   introSection.classList.toggle("disactive");
   todoListSection.classList.toggle("disactive");
 });
+//-----------------------------------------------------------------
+// checked options
+const changeItemIsCheckedStatus = (label, array) => {
+  return array.map((item) => {
+    if (item.id === label.id) {
+      console.log(`CONDITION:from storage - ${item.id}`);
+      item.isChecked = label.classList.contains("checked") ? true : false;
+    }
+  });
+};
+let changeItemInDom = () => {
+  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+  const labels = document.querySelectorAll("label");
+  checkboxes.forEach((checkbox) => {
+    labels.forEach((label) => {
+      todoData = JSON.parse(localStorage.getItem("key"));
+      if (checkbox.getAttribute("id") === label.getAttribute("for")) {
+        if (checkbox.checked) {
+          label.classList.add("checked");
+          document
+            .querySelector(`.todo-list-option${checkbox.id}`)
+            .classList.add("checked_option");
+        } else {
+          label.classList.remove("checked");
+          document
+            .querySelector(`.todo-list-option${checkbox.getAttribute("id")}`)
+            .classList.remove("checked_option");
+        }
 
-//------------------------------------------------------------------
-
+        changeItemIsCheckedStatus(label, todoData);
+        localStorage.setItem(`key`, JSON.stringify(todoData));
+      }
+    });
+  });
+};
 // todo list section functional
 const userList = document.querySelector("#user-list");
 const addOptionBtn = document.getElementById("add-option");
 const inputOption = document.getElementById("input-list-options");
 
+const localStorageGetData = () => {
+  //get data
+  if (localStorage.getItem("key")) {
+    //get data
+    todoData = JSON.parse(localStorage.getItem("key"));
+    //output them to DOM
+    todoData.forEach((item) => {
+      let divWrap = document.createElement("div");
+      divWrap.className = `todo-list-option${item.checkId} optional`;
+
+      divWrap.innerHTML = `
+          <input type="checkbox" name="checkbox" id="${
+            item.checkId
+          }" class = "check-box" ${item.isChecked ? "checked" : ""} >
+          <label for="${item.checkId}" class = "option-label" id = "${
+        item.id
+      }">${item.name}</label>
+        `;
+      userList.append(divWrap);
+      console.log(document.getElementById(`input[id = "${item.checkId}"]`));
+    });
+  } else {
+    todoData = [];
+  }
+};
+
+localStorageGetData();
+
 const addUserInputedOption = () => {
+  let checkboxId = localId();
   let divWrap = document.createElement("div");
-  divWrap.className = `todo-list-option${index} optional`;
+  divWrap.className = `todo-list-option${checkboxId} optional`;
   divWrap.innerHTML = `
-      <input type="checkbox" name="checkbox" id="${index}" class = "check-box">
-      <label for="${index}" class = "option-label">${inputOption.value}</label>
+      <input type="checkbox" name="checkbox" id="${checkboxId}" class = "check-box">
+      <label for="${checkboxId}" class = "option-label" id = "label${checkboxId}">${inputOption.value}</label>
     `;
   userList.insertAdjacentElement("beforeend", divWrap);
-  index++;
+  // get elems from ls again(naaaaaaaaaaaaaaande?)
+  todoData = localStorage.getItem("key")
+    ? JSON.parse(localStorage.getItem("key"))
+    : [];
+  const createTodoDataObj = (array) => {
+    let todoObj = {};
+    todoObj.name = inputOption.value;
+    todoObj.id = `label${checkboxId}`;
+    todoObj.checkId = checkboxId;
+    todoObj.isChecked = false;
+    array.push(todoObj);
+  };
+
+  createTodoDataObj(todoData);
+  localStorage.setItem(`key`, JSON.stringify(todoData));
   inputOption.value = "";
 };
 
@@ -37,49 +126,20 @@ document.addEventListener("keydown", (e) => {
   }
 });
 
-// checked options
-
 userList.addEventListener("change", () => {
-  const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-  const labels = document.querySelectorAll("label");
-  checkboxes.forEach((checkbox) => {
-    labels.forEach((label) => {
-      if (checkbox.getAttribute("id") === label.getAttribute("for")) {
-        if (checkbox.checked) {
-          label.classList.add("checked");
-          document
-            .querySelector(`.todo-list-option${checkbox.getAttribute("id")}`)
-            .classList.add("checked_option");
-        } else {
-          label.classList.remove("checked");
-          document
-            .querySelector(`.todo-list-option${checkbox.getAttribute("id")}`)
-            .classList.remove("checked_option");
-        }
-      }
-    });
-  });
+  changeItemInDom();
+});
+
+document.querySelectorAll('input[type = "checkbox"]').forEach((box) => {
+  if (box.checked) {
+    changeItemInDom();
+  }
 });
 
 const clearBtn = document.getElementById("clear");
 clearBtn.addEventListener("click", () => {
-  userList.innerHTML = "";
+  if (confirm("Do you really want to delete all notes?")) {
+    userList.innerHTML = "";
+    localStorage.clear();
+  }
 });
-
-//-------------------------------
-
-// add interesting animation  for hovering notes: delete
-// click on added option  --> show delete button --> delete if button was clicked
-
-// const checkLabels = document.querySelectorAll("label");
-// document.addEventListener("change", () => {
-//   checkLabels.forEach((label) => {
-//     if (label.classList.contains("checked")) {
-//       let deleteButton = document.createElement("button");
-//       deleteButton.innerHTML = "Delete";
-//       deleteButton.className = "button";
-//       label.insertAdjacentElement("beforeend", deleteButton);
-//       console.log("i work ");
-//     }
-//   });
-// });
